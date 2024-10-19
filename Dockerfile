@@ -2,7 +2,7 @@ FROM golang:1.22-bullseye AS builder
 
 ENV GO111MODULE on
 
-COPY blockerr .
+COPY . .
 
 RUN go build -o /usr/bin/checkrr ./
 
