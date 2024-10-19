@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	log "github.com/sirupsen/logrus"
@@ -12,7 +13,7 @@ import (
 )
 
 func main() {
-	config, err := config.LoadConfig("./config.yaml")
+	config, err := config.LoadConfig(os.Args[1])
 	if err != nil {
 		fmt.Printf("Error loading config: %v\n", err)
 		return

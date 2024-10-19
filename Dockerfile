@@ -12,5 +12,5 @@ FROM ubuntu:jammy
 
 COPY --from=builder /usr/bin/checkrr /usr/bin/checkrr
 
-CMD ["checkrr"]
+CMD ["checkrr /etc/checkrr/config.yaml"]
 
