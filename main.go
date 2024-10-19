@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"time"
 
@@ -15,7 +14,7 @@ import (
 func main() {
 	config, err := config.LoadConfig(os.Args[1])
 	if err != nil {
-		fmt.Printf("Error loading config: %v\n", err)
+		log.Fatalf("Error loading config: %v", err)
 		return
 	}
 

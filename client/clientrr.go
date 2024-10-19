@@ -35,7 +35,7 @@ func (c *ClientRR) FetchDownloads() ([]Download, error) {
 	var downloads []Download
 
 	for page := 1; ; page++ {
-		log.Debugf("Fetching download page %d...\n", page)
+		log.Debugf("Fetching download page %d...", page)
 		pageDownloads, totalRecords, err := c.fetchDownloadPage(page)
 		if err != nil {
 			return nil, err

@@ -43,7 +43,7 @@ func NewCheckRR(
 }
 
 func (c *CheckRR) Check() error {
-	log.Debugf("Checking for stuck downloads on %s...\n", c.name)
+	log.Debugf("Checking for stuck downloads on %s...", c.name)
 	downloads, err := c.client.FetchDownloads()
 	if err != nil {
 		return err
@@ -57,9 +57,9 @@ func (c *CheckRR) Check() error {
 		}
 		if stuck {
 			stucks = append(stucks, download.ID)
-			log.Warnf("Stuck download detected [ID: %d]: %s, Reason: %s\n", download.ID, download.Title, reason)
+			log.Warnf("Stuck download detected [ID: %d]: %s, Reason: %s", download.ID, download.Title, reason)
 		} else {
-			log.Infof("Download is OK [ID: %d]: %s, Reason: %s\n", download.ID, download.Title, reason)
+			log.Infof("Download is OK [ID: %d]: %s, Reason: %s", download.ID, download.Title, reason)
 		}
 	}
 	err = c.client.DeleteFromQueue(stucks)
@@ -113,7 +113,7 @@ func averageSpeed(download client.Download) float64 {
 	// Parse the added time
 	addedTime, err := time.Parse(time.RFC3339, download.Added)
 	if err != nil {
-		fmt.Printf("Error parsing added time: %v\n", err)
+		log.WithError(err).Error("Error parsing added time")
 		return 0
 	}
 	return float64(download.Size-download.SizeLeft) / time.Since(addedTime).Seconds()
