@@ -39,7 +39,6 @@ func main() {
 			err := c.Check()
 			if err != nil {
 				log.WithError(err).Errorf("error checking client")
-				return
 			}
 		}
 		time.Sleep(config.SleepTime)
