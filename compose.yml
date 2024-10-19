@@ -1,0 +1,8 @@
+---
+services:
+  checkrr:
+    container_name: checkrr
+    build: .
+    restart: always
+    volumes:
+      - ./config.yaml:/etc/checkrr/config.yaml
