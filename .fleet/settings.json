@@ -1,0 +1,16 @@
+{
+    "toolchains": [
+        {
+            "name": "Go",
+        }
+    ],
+
+    "plugins": [
+        {
+            "type": "add",
+            "pluginName": "fleet.go"
+        }
+    ],
+    "excluded": [],
+    "editor.guides": []
+}
