@@ -2,20 +2,19 @@ package checkrr
 
 import (
 	"fmt"
+	"time"
+
 	log "github.com/sirupsen/logrus"
 	"github.com/soheilrt/checkrr/client"
 	"github.com/soheilrt/checkrr/config"
-	"time"
 )
 
 const (
 	statusDownloading = "downloading"
-
 	reasonStatusNotDownloading = "Download status is not downloading"
 	reasonNotEnoughTime        = "Download started recently, threshold: %s, actual: %s"
 	reasonDownloadTimeout      = "Download timed out, threshold: %s, actual: %s"
 	reasonSlowDownloadSpeed    = "Average speed is below %v/s: %v"
-
 	reasonAllGood = "Average speed is %v/s"
 )
 
@@ -130,4 +129,5 @@ func bytesToHumanReadable(bytes float64) string {
 		exp++
 	}
 	return fmt.Sprintf("%.1f%cB", bytes/float64(div), "KMGTPE"[exp])
+
 }

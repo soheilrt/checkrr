@@ -26,7 +26,7 @@ func main() {
 		log.SetLevel(l)
 	}
 
-	checkrrs := []*checkrr.CheckRR{}
+	var checkrrs []*checkrr.CheckRR
 	for _, c := range config.Clients {
 		cl := client.NewClientRR(c.Host, c.APIKey, c.Options)
 		check := checkrr.NewCheckRR(c.Name, cl, c.Conditions)
