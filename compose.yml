@@ -2,7 +2,7 @@
 services:
   checkrr:
     container_name: checkrr
-    build: .
+    build: soheilrt/checkrr:latest
     restart: always
     volumes:
       - ./config.yaml:/etc/checkrr/config.yaml

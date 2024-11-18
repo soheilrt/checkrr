@@ -2,7 +2,7 @@ sleep_time: 1m # Sleep time between each check
 log_level: info
 clients:
   - name: radarr
-    host: http://example.com
+    host: http://radarr.local
     api_key: ....
     conditions:
       waiting_threshold: 10m # How long should wait for torrent before checking the status
@@ -10,8 +10,10 @@ clients:
       average_speed_threshold: 256000 # Bytes -> 200KB/s
     options:
       blocklist: true
+      keep_in_client: false
+      skip_redownload: false
   - name: sonarr
-    host: http://example.com
+    host: http://sonarr.local
     api_key: ...
     conditions:
       waiting_threshold: 10m
@@ -19,3 +21,5 @@ clients:
       average_speed_threshold: 256000 # 200KB/s
     options:
       blocklist: true # Blocklist the torrent on deletion to prevent re-downloading the same torrent
+      keep_in_client: false
+      skip_redownload: false
