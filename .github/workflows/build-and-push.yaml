@@ -22,12 +22,10 @@ jobs:
           docker build \
             -t soheilrt/checkrr:latest \
             -t soheilrt/checkrr:main \
-            -t soheilrt/checkrr:${{github.sha}} . \
-          && docker push soheilrt/checkrr:latest \
-          && docker push soheilrt/checkrr:main \
-          && docker push soheilrt/checkrr:${{github.sha}}
+            -t soheilrt/checkrr:${{github.sha}} .
 
       - name: Push
-        run: docker push soheilrt/checkrr:latest \
-          && docker push soheilrt/checkrr:main \
-          && docker push soheilrt/checkrr:${{github.sha}}
+        run: |
+          docker push soheilrt/checkrr:latest
+          docker push soheilrt/checkrr:main
+          docker push soheilrt/checkrr:${{github.sha}}
