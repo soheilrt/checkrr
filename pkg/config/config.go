@@ -33,7 +33,6 @@ type Options struct {
 	KeepInClient   bool `yaml:"keep_in_client"`
 	BlockList      bool `yaml:"block_list"`
 	SkipRedownload bool `yaml:"skip_redownload"`
-	changeCategory bool `yaml:"change_category"`
 }
 
 func LoadConfig(filename string) (*Config, error) {

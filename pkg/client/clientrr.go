@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/soheilrt/checkrr/pkg/config"
 	"io"
 	"net/http"
 	"strconv"
 
 	log "github.com/sirupsen/logrus"
+
+	"github.com/soheilrt/checkrr/pkg/config"
 )
 
 const (
@@ -104,6 +105,7 @@ func (c *ClientRR) DeleteFromQueue(ids []int) error {
 	q := req.URL.Query()
 	q.Add("removeFromClient", strconv.FormatBool(!c.options.KeepInClient))
 	q.Add("blocklist", strconv.FormatBool(c.options.BlockList))
+	q.Add("skipRedownload", strconv.FormatBool(c.options.SkipRedownload))
 	req.URL.RawQuery = q.Encode() // Important: this actually sets the query string
 
 	// Convert IDs to string and marshal the body
