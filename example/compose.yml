@@ -5,4 +5,4 @@ services:
     build: soheilrt/checkrr:latest
     restart: always
     volumes:
-      - ./config.yaml:/etc/checkrr/config.yaml
+      - ./config.yaml:/etc/checkrr/config.yaml:ro

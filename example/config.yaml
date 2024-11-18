@@ -1,0 +1,48 @@
+# Time interval to wait before each check
+sleep_time: 1m
+
+# Level of logging; can be 'debug', 'info', 'warning', 'error', etc.
+log_level: info
+
+clients:
+  - # Name of the client; used for movie management
+    name: radarr
+    # Address where the Radarr service is hosted
+    host: http://radarr.local # TODO: replace with your Radarr Address
+    # API key for authenticating requests to Radarr
+    api_key: .... # TODO: Add your Radarr API Key
+    conditions:
+      # Maximum time to wait for a torrent to start before checking its status
+      waiting_threshold: 5m
+      # Maximum time to allow a download to complete
+      download_timeout_threshold: 12h
+      # Minimum average download speed in bytes (200 KB/s)
+      average_speed_threshold: 256000
+    options:
+      # Whether to blocklist torrents when stuck conditions are met
+      blocklist: true
+      # Whether to keep the torrent in the client after processing
+      keep_in_client: false
+      # Whether to skip downloading the same torrent again after deletion
+      skip_redownload: false
+
+  - # Name of the client; used for TV show management
+    name: sonarr
+    # Address where the Sonarr service is hosted
+    host: http://sonarr.local # TODO: Replace with your Sonarr Address
+    # API key for authenticating requests to Sonarr
+    api_key: ... # TODO: Add your Sonarr API Key
+    conditions:
+      # Maximum time to wait for a torrent to start before checking its status
+      waiting_threshold: 5m
+      # Maximum time to allow a download to complete
+      download_timeout_threshold: 18h
+      # Minimum average download speed in bytes (200 KB/s)
+      average_speed_threshold: 256000
+    options:
+      # Whether to blocklist the torrent on deletion to prevent re-downloading
+      blocklist: true
+      # Whether to keep the torrent in the client after processing
+      keep_in_client: false
+      # Whether to prevent re-downloading of the same torrent after deletion
+      skip_redownload: false 
