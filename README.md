@@ -3,6 +3,8 @@
 Checkrr is a lightweight tool designed to help users detect stuck Radarr/Sonarr downloads and retry with an alternative
 torrent. Built on a few simple ideas, Checkrr ensures reliability and value without introducing complications.
 
+## **Looking for an example?** [HERE](./example)
+
 ## Checkrr Pillars
 
 ### Stateless Architecture
@@ -17,7 +19,9 @@ Checkrr employs two fundamental concepts to identify stuck downloads:
 1. **Average Download Speed Threshold**: This criterion helps identify both slow and dead downloads. The average
    download speed is calculated using a straightforward formula:
     ```plaintext
-    average download speed per second = (total file size - remaining download size) / number of seconds since the start of the download
+                                            (total file size - remaining download size) 
+    average download speed per second = -------------------------------------------------
+                                        number of seconds since the start of the download
     ```
    The advantages of this approach include:
     - Resilience to temporary network disconnections, as torrent is a distributed network.
