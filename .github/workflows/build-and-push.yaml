@@ -13,3 +13,11 @@ jobs:
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build and Push
+        run: |
+          docker build -t soheilrt/checkrr:latest -t soheilrt/checkrr:main . \
+          && docker push soheilrt/checkrr:latest soheilrt/checkrr:main
