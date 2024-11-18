@@ -10,12 +10,12 @@ import (
 )
 
 const (
-	statusDownloading = "downloading"
+	statusDownloading          = "downloading"
 	reasonStatusNotDownloading = "Download status is not downloading"
 	reasonNotEnoughTime        = "Download started recently, threshold: %s, actual: %s"
 	reasonDownloadTimeout      = "Download timed out, threshold: %s, actual: %s"
 	reasonSlowDownloadSpeed    = "Average speed is below %v/s: %v"
-	reasonAllGood = "Average speed is %v/s"
+	reasonAllGood              = "Average speed is %v/s"
 )
 
 type ClientRR interface {
@@ -109,7 +109,6 @@ func (c *CheckRR) IsDownloadStuck(download client.Download) (bool, string, error
 	return false, fmt.Sprintf(reasonAllGood, bytesToHumanReadable(avg)), nil
 }
 func averageSpeed(download client.Download) float64 {
-	// Parse the added time
 	addedTime, err := time.Parse(time.RFC3339, download.Added)
 	if err != nil {
 		log.WithError(err).Error("Error parsing added time")
