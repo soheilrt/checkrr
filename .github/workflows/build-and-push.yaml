@@ -22,8 +22,7 @@ jobs:
           docker build . \ 
             -t soheilrt/checkrr:latest 
             -t soheilrt/checkrr:main
-            -t soheilrt/checkrr:${{github.sha}}
-          \
+            -t soheilrt/checkrr:${{github.sha}} \
           && docker push \ 
             soheilrt/checkrr:latest \
             soheilrt/checkrr:main \
