@@ -17,13 +17,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build and Push
+      - name: Build
         run: |
           docker build \
             -t soheilrt/checkrr:latest \
             -t soheilrt/checkrr:main \
             -t soheilrt/checkrr:${{github.sha}} . \
-          && docker push \
-            soheilrt/checkrr:latest \
-            soheilrt/checkrr:main \
-            soheilrt/checkrr:${{github.sha}}
+          && docker push soheilrt/checkrr:latest \
+          && docker push soheilrt/checkrr:main \
+          && docker push soheilrt/checkrr:${{github.sha}}
+
+      - name: Push
+        run: docker push soheilrt/checkrr:latest \
+          && docker push soheilrt/checkrr:main \
+          && docker push soheilrt/checkrr:${{github.sha}}
