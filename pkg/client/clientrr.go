@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/soheilrt/checkrr/config"
+	"github.com/soheilrt/checkrr/pkg/config"
 	"io"
 	"net/http"
 	"strconv"

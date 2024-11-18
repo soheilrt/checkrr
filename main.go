@@ -1,14 +1,13 @@
 package main
 
 import (
+	"github.com/soheilrt/checkrr/pkg/checkrr"
+	"github.com/soheilrt/checkrr/pkg/client"
+	"github.com/soheilrt/checkrr/pkg/config"
 	"os"
 	"time"
 
 	log "github.com/sirupsen/logrus"
-
-	"github.com/soheilrt/checkrr/checkrr"
-	"github.com/soheilrt/checkrr/client"
-	"github.com/soheilrt/checkrr/config"
 )
 
 func main() {

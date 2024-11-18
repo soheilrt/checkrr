@@ -2,15 +2,16 @@ package checkrr
 
 import (
 	"fmt"
+	"github.com/soheilrt/checkrr/pkg/client"
+	"github.com/soheilrt/checkrr/pkg/config"
 	"time"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/soheilrt/checkrr/client"
-	"github.com/soheilrt/checkrr/config"
 )
 
 const (
-	statusDownloading          = "downloading"
+	statusDownloading = "downloading"
+
 	reasonStatusNotDownloading = "Download status is not downloading"
 	reasonNotEnoughTime        = "Download started recently, threshold: %s, actual: %s"
 	reasonDownloadTimeout      = "Download timed out, threshold: %s, actual: %s"
@@ -42,7 +43,7 @@ func NewCheckRR(
 }
 
 func (c *CheckRR) Check() error {
-	log.Debugf("Checking for stuck downloads on %s...", c.name)
+	log.Infof("Checking downloads on %s...", c.name)
 	downloads, err := c.client.FetchDownloads()
 	if err != nil {
 		return err
