@@ -31,7 +31,7 @@ type Conditions struct {
 
 type Options struct {
 	KeepInClient   bool `yaml:"keep_in_client"`
-	BlockList      bool `yaml:"block_list"`
+	BlockList      bool `yaml:"blocklist"`
 	SkipRedownload bool `yaml:"skip_redownload"`
 }
 
