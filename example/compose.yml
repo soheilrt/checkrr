@@ -6,3 +6,6 @@ services:
     restart: always
     volumes:
       - ./config.yaml:/etc/checkrr/config.yaml:ro
+    environment:
+      - API_KEY_RADARR=${API_KEY_RADARR}
+      - API_KEY_SONARR=${API_KEY_SONARR}

@@ -57,6 +57,37 @@ docker run -d \
   soheilrt/checkrr:latest
 ```
 
+## Using Environment Variables for Secrets
+
+Instead of hardcoding sensitive information like API keys in the configuration file, you can use environment variables to securely manage secrets. This approach enhances security and makes it easier to manage configurations across different environments.
+
+### Steps to Use Environment Variables
+
+1. **Modify the Configuration File**:
+   In the `config.yaml` file, remove the `api_key` field.
+2. **Environment Variable Override**:
+   The application will automatically override the `api_key` field in the configuration file with the corresponding environment variable. For example, the `api_key` for the `radarr` client will be replaced by the value of `API_KEY_RADARR`.
+3. **Set Environment Variables**:
+   Define the required environment variables in your system or container. For example:
+
+    ```shell
+    export API_KEY_RADARR="your_radarr_api_key"
+    export API_KEY_SONARR="your_sonarr_api_key"
+    ```
+
+    If you are using Docker, you can pass these variables to the container using the `-e` flag:
+
+    ```shell
+    docker run -d \
+      --name checkrr \
+      --restart always \
+      -v $(pwd)/config.yaml:/etc/checkrr/config.yaml:ro \
+      -e API_KEY_RADARR="your_radarr_api_key" \
+      -e API_KEY_SONARR="your_sonarr_api_key" \
+      soheilrt/checkrr:latest
+    ```
+
+By following these steps, you can securely manage secrets without exposing them in your configuration files.
 
 ## Example of Logs
 

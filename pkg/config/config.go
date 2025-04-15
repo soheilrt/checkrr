@@ -2,7 +2,9 @@ package config
 
 import (
 	"fmt"
+	"io"
 	"os"
+	"strings"
 	"time"
 
 	"gopkg.in/yaml.v3"
@@ -35,17 +37,20 @@ type Options struct {
 	SkipRedownload bool `yaml:"skip_redownload"`
 }
 
-func LoadConfig(filename string) (*Config, error) {
-	file, err := os.Open(filename)
-	if err != nil {
-		return nil, fmt.Errorf("error opening file: %v", err)
-	}
-	defer file.Close()
-
+func LoadConfig(reader io.Reader) (*Config, error) {
 	var config Config
-	decoder := yaml.NewDecoder(file)
+	decoder := yaml.NewDecoder(reader)
 	if err := decoder.Decode(&config); err != nil {
 		return nil, fmt.Errorf("error decoding YAML: %v", err)
+	}
+
+	// Override APIKey from environment variables if available
+	for i := range config.Clients {
+		envVarName := "API_KEY_" + strings.ToUpper(config.Clients[i].Name)
+		envAPIKey := os.Getenv(envVarName)
+		if envAPIKey != "" {
+			config.Clients[i].APIKey = envAPIKey
+		}
 	}
 
 	return &config, nil

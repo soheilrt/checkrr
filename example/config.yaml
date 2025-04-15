@@ -10,7 +10,8 @@ clients:
     # Address where the Radarr service is hosted
     host: http://radarr.local # TODO: replace with your Radarr Address
     # API key for authenticating requests to Radarr
-    api_key: .... # TODO: Add your Radarr API Key
+    # TODO: Can be explicitly set here (not recommended) or loaded from environment variables using the format API_KEY_{CLIENT_NAME_UPPER_CASE}, e.g., API_KEY_RADARR
+    api_key: ""
     conditions:
       # Maximum time to wait for a torrent to start before checking its status
       waiting_threshold: 5m
@@ -31,7 +32,8 @@ clients:
     # Address where the Sonarr service is hosted
     host: http://sonarr.local # TODO: Replace with your Sonarr Address
     # API key for authenticating requests to Sonarr
-    api_key: ... # TODO: Add your Sonarr API Key
+    # TODO: Can be explicitly set here (not recommended) or loaded from environment variables using the format API_KEY_{CLIENT_NAME_UPPER_CASE}, e.g., API_KEY_SONARR
+    api_key: ""
     conditions:
       # Maximum time to wait for a torrent to start before checking its status
       waiting_threshold: 5m
@@ -45,4 +47,4 @@ clients:
       # Whether to keep the torrent in the client after processing
       keep_in_client: false
       # Whether to prevent re-downloading of the same torrent after deletion
-      skip_redownload: false 
+      skip_redownload: false
