@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"time"
 
@@ -35,15 +36,9 @@ type Options struct {
 	SkipRedownload bool `yaml:"skip_redownload"`
 }
 
-func LoadConfig(filename string) (*Config, error) {
-	file, err := os.Open(filename)
-	if err != nil {
-		return nil, fmt.Errorf("error opening file: %v", err)
-	}
-	defer file.Close()
-
+func LoadConfig(reader io.Reader) (*Config, error) {
 	var config Config
-	decoder := yaml.NewDecoder(file)
+	decoder := yaml.NewDecoder(reader)
 	if err := decoder.Decode(&config); err != nil {
 		return nil, fmt.Errorf("error decoding YAML: %v", err)
 	}

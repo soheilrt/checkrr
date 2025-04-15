@@ -12,7 +12,14 @@ import (
 )
 
 func main() {
-	config, err := config.LoadConfig(os.Args[1])
+	configFile, err := os.Open(os.Args[1])
+	if err != nil {
+		log.Fatalf("Error opening config file: %v", err)
+		return
+	}
+	defer configFile.Close()
+
+	config, err := config.LoadConfig(configFile)
 	if err != nil {
 		log.Fatalf("Error loading config: %v", err)
 		return
