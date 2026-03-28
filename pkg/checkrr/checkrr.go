@@ -1,10 +1,12 @@
 package checkrr
 
 import (
+	"errors"
 	"fmt"
+	"time"
+
 	"github.com/soheilrt/checkrr/pkg/client"
 	"github.com/soheilrt/checkrr/pkg/config"
-	"time"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -13,11 +15,14 @@ const (
 	statusDownloading = "downloading"
 
 	reasonStatusNotDownloading = "Download status is not downloading"
+	reasonMissingAdded         = "Added timestamp is missing"
 	reasonNotEnoughTime        = "Download started recently, threshold: %s, actual: %s"
 	reasonDownloadTimeout      = "Download timed out, threshold: %s, actual: %s"
 	reasonSlowDownloadSpeed    = "Average speed is below %v/s: %v"
 	reasonAllGood              = "Average speed is %v/s"
 )
+
+var ErrMissingAdded = errors.New(reasonMissingAdded)
 
 type ClientRR interface {
 	FetchDownloads() ([]client.Download, error)
@@ -52,6 +57,10 @@ func (c *CheckRR) Check() error {
 	stucks := []int{}
 	for _, download := range downloads {
 		stuck, reason, err := c.IsDownloadStuck(download)
+		if errors.Is(err, ErrMissingAdded) {
+			log.Warnf("Skipping download [ID: %d]: %s, Reason: %s", download.ID, download.Title, reason)
+			continue
+		}
 		if err != nil {
 			return fmt.Errorf("error checking download status: %v", err)
 		}
@@ -72,6 +81,9 @@ func (c *CheckRR) Check() error {
 func (c *CheckRR) IsDownloadStuck(download client.Download) (bool, string, error) {
 	if download.Status != statusDownloading {
 		return false, reasonStatusNotDownloading, nil
+	}
+	if download.Added == "" {
+		return false, reasonMissingAdded, ErrMissingAdded
 	}
 
 	addedTime, err := time.Parse(time.RFC3339, download.Added)
