@@ -15,6 +15,8 @@ clients:
     conditions:
       # Maximum time to wait for a torrent to start before checking its status
       waiting_threshold: 5m
+      # Maximum time to wait for the download to actually start
+      download_start_wait_time: 1m
       # Maximum time to allow a download to complete
       download_timeout_threshold: 12h
       # Minimum average download speed in bytes (200 KB/s)
@@ -37,6 +39,8 @@ clients:
     conditions:
       # Maximum time to wait for a torrent to start before checking its status
       waiting_threshold: 5m
+      # Maximum time to wait for the download to actually start
+      download_start_wait_time: 1m
       # Maximum time to allow a download to complete
       download_timeout_threshold: 18h
       # Minimum average download speed in bytes (200 KB/s)

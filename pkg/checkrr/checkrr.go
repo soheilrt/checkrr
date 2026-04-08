@@ -17,6 +17,7 @@ const (
 	reasonStatusNotDownloading = "Download status is not downloading"
 	reasonMissingAdded         = "Added timestamp is missing"
 	reasonNotEnoughTime        = "Download started recently, threshold: %s, actual: %s"
+	reasonDownloadNotStarted   = "Download did not start within threshold: %s, actual: %s"
 	reasonDownloadTimeout      = "Download timed out, threshold: %s, actual: %s"
 	reasonSlowDownloadSpeed    = "Average speed is below %v/s: %v"
 	reasonAllGood              = "Average speed is %v/s"
@@ -91,42 +92,72 @@ func (c *CheckRR) IsDownloadStuck(download client.Download) (bool, string, error
 		return false, "", fmt.Errorf("error parsing added time: %v", err)
 	}
 
-	if c.conditions.WaitingThreshold > 0 && time.Since(addedTime) < c.conditions.WaitingThreshold {
-		return false, fmt.Sprintf(
-				reasonNotEnoughTime,
-				c.conditions.WaitingThreshold,
-				time.Since(addedTime),
-			),
-			nil
+	if stuck, reason := c.downloadNotStarted(download, addedTime); stuck {
+		return true, reason, nil
 	}
 
-	if c.conditions.DownloadTimeoutThreshold > 0 && time.Since(addedTime) > c.conditions.DownloadTimeoutThreshold {
-		return true, fmt.Sprintf(
-				reasonDownloadTimeout,
-				c.conditions.DownloadTimeoutThreshold,
-				time.Since(addedTime),
-			),
-			nil
+	if skip, reason := c.isUnderWaitingThreshold(download, addedTime); skip {
+		return false, reason, nil
 	}
 
-	avg := averageSpeed(download)
-	if c.conditions.AverageSpeedThreshold > 0 && avg < c.conditions.AverageSpeedThreshold {
-		return true, fmt.Sprintf(
-				reasonSlowDownloadSpeed,
-				bytesToHumanReadable(c.conditions.AverageSpeedThreshold),
-				bytesToHumanReadable(avg),
-			),
-			nil
+	if stuck, reason := c.downloadTimedOut(download, addedTime); stuck {
+		return true, reason, nil
 	}
 
+	if stuck, reason := c.isSlowDownload(download, addedTime); stuck {
+		return true, reason, nil
+	}
+
+	avg := averageSpeed(addedTime, download)
 	return false, fmt.Sprintf(reasonAllGood, bytesToHumanReadable(avg)), nil
 }
-func averageSpeed(download client.Download) float64 {
-	addedTime, err := time.Parse(time.RFC3339, download.Added)
-	if err != nil {
-		log.WithError(err).Error("Error parsing added time")
-		return 0
+
+func (c *CheckRR) downloadNotStarted(download client.Download, addedTime time.Time) (bool, string) {
+	if c.conditions.DownloadStartWaitTime > 0 && download.Size == download.SizeLeft && time.Since(addedTime) > c.conditions.DownloadStartWaitTime {
+		return true, fmt.Sprintf(
+				reasonDownloadNotStarted,
+				c.conditions.DownloadStartWaitTime,
+				time.Since(addedTime),
+			),
+			nil
 	}
+	return false, ""
+}
+
+func (c *CheckRR) isUnderWaitingThreshold(download client.Download, addedTime time.Time) (bool, string) {
+	if download.SizeLeft < download.Size && c.conditions.WaitingThreshold > 0 && time.Since(addedTime) < c.conditions.WaitingThreshold {
+		return true, fmt.Sprintf(
+			reasonNotEnoughTime,
+			c.conditions.WaitingThreshold,
+			time.Since(addedTime),
+		)
+	}
+	return false, ""
+}
+
+func (c *CheckRR) downloadTimedOut(download client.Download, addedTime time.Time) (bool, string) {
+	if c.conditions.DownloadTimeoutThreshold > 0 && time.Since(addedTime) > c.conditions.DownloadTimeoutThreshold {
+		return true, fmt.Sprintf(
+			reasonDownloadTimeout,
+			c.conditions.DownloadTimeoutThreshold,
+			time.Since(addedTime),
+		)
+	}
+	return false, ""
+}
+
+func (c *CheckRR) isSlowDownload(download client.Download, addedTime time.Time) (bool, string) {
+	avg := averageSpeed(addedTime, download)
+	if c.conditions.AverageSpeedThreshold > 0 && avg < c.conditions.AverageSpeedThreshold {
+		return true, fmt.Sprintf(
+			reasonSlowDownloadSpeed,
+			bytesToHumanReadable(c.conditions.AverageSpeedThreshold),
+			bytesToHumanReadable(avg),
+		)
+	}
+	return false, ""
+}
+func averageSpeed(addedTime time.Time, download client.Download) float64 {
 	return float64(download.Size-download.SizeLeft) / time.Since(addedTime).Seconds()
 }
 
