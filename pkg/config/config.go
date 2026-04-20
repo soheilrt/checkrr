@@ -27,6 +27,7 @@ type ClientConfig struct {
 
 type Conditions struct {
 	WaitingThreshold         time.Duration `yaml:"waiting_threshold"`
+	DownloadStartWaitTime    time.Duration `yaml:"download_start_wait_time"`
 	DownloadTimeoutThreshold time.Duration `yaml:"download_timeout_threshold"`
 	AverageSpeedThreshold    float64       `yaml:"average_speed_threshold"`
 }

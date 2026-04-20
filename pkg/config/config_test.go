@@ -15,6 +15,7 @@ clients:
     host: http://example.com
     conditions:
       waiting_threshold: 10s
+      download_start_wait_time: 1m
       download_timeout_threshold: 30s
       average_speed_threshold: 1.5
     options:
@@ -46,6 +47,9 @@ log_level: debug
 
 	if client.Conditions.WaitingThreshold != 10*time.Second {
 		t.Errorf("Expected WaitingThreshold 10s, got %v", client.Conditions.WaitingThreshold)
+	}
+	if client.Conditions.DownloadStartWaitTime != time.Minute {
+		t.Errorf("Expected DownloadStartWaitTime 1m, got %v", client.Conditions.DownloadStartWaitTime)
 	}
 
 	if client.Options.KeepInClient != true {

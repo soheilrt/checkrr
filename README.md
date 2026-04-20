@@ -14,7 +14,7 @@ seamless updates, restarts, or movements without affecting its behavior.
 
 ### Simple Stuck Detection Logic
 
-Checkrr employs two fundamental concepts to identify stuck downloads:
+Checkrr employs three fundamental concepts to identify stuck downloads:
 
 1. **Average Download Speed Threshold**: This criterion helps identify both slow and dead downloads. The average
    download speed is calculated using a straightforward formula:
@@ -32,6 +32,10 @@ Checkrr employs two fundamental concepts to identify stuck downloads:
    take excessively long. Occasionally, files may download almost completely before getting stuck. In such cases, the
    average speed threshold might take a while to identify the issue. The timeout threshold is beneficial here, as it
    marks the download as stuck if it exceeds the specified duration.
+
+3. **Download Start Wait Time**: Sometimes torrents never actually begin downloading. This setting defines how long to
+   wait for any progress after a torrent is added. If no data has been downloaded within this time, the torrent is
+   removed and retried, regardless of the regular waiting threshold for speed checks.
 
 ## Installation
 
